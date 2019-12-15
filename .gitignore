@@ -1,6 +1,0 @@
-venv
-.python-version
-.vscode
-.idea
-__pycache__
-requirements-old.txt
