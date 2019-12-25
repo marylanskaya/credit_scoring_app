@@ -9,6 +9,7 @@ import router from './router';
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
+Vue.use(require('crypto'));
 
 /* eslint-disable no-new */
 new Vue({

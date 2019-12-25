@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Ping from '@/components/Ping';
 import Books from '@/components/Books';
 import Login from '@/components/Login';
+import Info from '@/components/Info';
 
 Vue.use(Router);
 
@@ -23,11 +24,11 @@ export default new Router({
       name: 'Login',
       component: Login,
     },
-    // {
-    //   path: '/userinfo',
-    //   name: 'Usernfo',
-    //   component: Userinfo,
-    // },
+    {
+      path: '/info',
+      name: 'Info',
+      component: Info,
+    },
   ],
   mode: 'history',
 });
