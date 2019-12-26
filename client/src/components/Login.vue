@@ -20,12 +20,18 @@
                 <b-form-select v-model="document.type">
                   <option :value="null" disabled>Выберите тип документа</option>
                   <option value="passport_rf">Паспорт гражданина РФ</option>
-                  <option value="passport_inter">Загран паспорт иностранного гражданина</option>
-                  <optgroup label="Иные документы">
-                    <option value="driver_license">Водительское удостоверение</option>
-                    <option value="another_doc">Иной документ</option>
-                  </optgroup>
+                  <option value="passport_inter">Загранпаспорт иностранного гражданина</option>
+                  <option value="another_doc">Иной документ</option>
                 </b-form-select>
+              </b-col>
+            </b-row>
+            <b-row class="text-right mt-3">
+              <b-col sm="3" align-self="end">
+                <label>Кем выдан</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  v-model="document.issue_unit"></b-form-input>
               </b-col>
             </b-row>
             <b-row class="text-right mt-3">
@@ -48,7 +54,6 @@
                   placeholder="Номер документа"></b-form-input>
               </b-col>
             </b-row>
-            <!--  -->
             <b-row class="text-right mt-3">
               <b-col cols='3' align-self="end">
                 <label>Когда выдан</label>
@@ -67,7 +72,6 @@
                 <b-form-input v-model="document.unit_code"></b-form-input>
               </b-col>
             </b-row>
-            <!--  -->
             <b-row>
               <b-button
               type="button"
@@ -145,16 +149,6 @@
                 <b-form-input v-model="user.address"></b-form-input>
               </b-col>
             </b-row>
-            <b-row class="text-right mt-3">
-              <b-col sm="3" align-self="end">
-                <label>Мобильный телефон</label>
-              </b-col>
-              <b-col>
-                <b-form-input
-                  v-model="user.mobile"
-                  placeholder="+71234567890"></b-form-input>
-              </b-col>
-            </b-row>
             <b-row align-h="around" align-v="center" class="mt-3">
               <b-col>
                 <b-button type='reset' variant="danger" style="width: 100%"
@@ -184,6 +178,7 @@ export default {
         type: 'passport_inter',
         series: '4821',
         number: '21482148',
+        issue_unit: 'МВД РК',
         issue_date: '2014-01-22',
         unit_code: '1234',
       },
@@ -195,7 +190,6 @@ export default {
         gender: 'male',
         citizenship: 'Казахстан',
         address: 'г.Москва, пр-кт 60-летия Октября, д.11, кв.1616',
-        mobile: '+71234567890',
       },
     };
   },
@@ -212,6 +206,7 @@ export default {
             this.document.type = res.data.data.document.type;
             this.document.series = res.data.data.document.series;
             this.document.number = res.data.data.document.number;
+            this.document.issue_unit = res.data.data.document.issue_unit;
             this.document.issue_date = res.data.data.document.issue_date;
             this.document.unit_code = res.data.data.document.unit_code;
             this.user.surname = res.data.data.user.surname;
@@ -221,7 +216,6 @@ export default {
             this.user.gender = res.data.data.user.gender;
             this.user.citizenship = res.data.data.user.citizenship;
             this.user.address = res.data.data.user.address;
-            this.user.mobile = res.data.data.user.mobile;
           } else {
           // eslint-disable-next-line
             alert('Данный пользователь не найден!');
@@ -257,6 +251,7 @@ export default {
       this.document.type = '';
       this.document.series = '';
       this.document.number = '';
+      this.document.issue_unit = '';
       this.document.issue_date = '';
       this.document.unit_code = '';
       this.user.surname = '';
@@ -266,7 +261,6 @@ export default {
       this.user.gender = '';
       this.user.citizenship = '';
       this.user.address = '';
-      this.user.mobile = '';
     },
     clearInfo(evt) {
       evt.preventDefault();
@@ -278,6 +272,10 @@ export default {
         .then(() => {
           // eslint-disable-next-line
           console.log(payload);
+          const hash = payload.user_hash;
+          // eslint-disable-next-line
+          console.log(hash);
+          this.$router.replace({ name: 'Info', params: { hash } });
           this.$router.push('info');
         })
         .catch((error) => {
@@ -296,6 +294,7 @@ export default {
           number: this.document.number,
           issue_date: this.document.issue_date,
           unit_code: this.document.unit_code,
+          issue_unit: this.document.issue_unit,
         },
         user: {
           surname: this.user.surname,
@@ -305,7 +304,6 @@ export default {
           gender: this.user.gender,
           citizenship: this.user.citizenship,
           address: this.user.address,
-          mobile: this.user.mobile,
         },
       };
       this.registerUser(payload);

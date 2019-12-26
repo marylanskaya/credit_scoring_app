@@ -1,4 +1,7 @@
 __pycache__
+.DS_Store
 .vscode
 .python-version
 venv
+notebooks
+report

@@ -4,6 +4,9 @@ import Ping from '@/components/Ping';
 import Books from '@/components/Books';
 import Login from '@/components/Login';
 import Info from '@/components/Info';
+import Profile from '@/components/Profile';
+import HelloWorld from '@/components/HelloWorld';
+
 
 Vue.use(Router);
 
@@ -28,6 +31,18 @@ export default new Router({
       path: '/info',
       name: 'Info',
       component: Info,
+      props: true,
+    },
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld,
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      props: true,
     },
   ],
   mode: 'history',

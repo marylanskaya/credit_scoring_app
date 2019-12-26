@@ -3,14 +3,13 @@ from loguru import logger
 
 from app import app
 from app.db import REDIS_CLIENT
+from app.model import MODEL
 from mock.db import BOOKS, uuid
 
 # sanity check route
 @app.route('/ping', methods=['GET'])
 def ping_pong():
-    logger.info("It's just log to info")
     REDIS_CLIENT.add_user('qwe', 'петров')
-    logger.info(REDIS_CLIENT.get_user('qwe'))
     return jsonify('pong!')
 
 
@@ -56,7 +55,6 @@ def document():
     response_object['user_exists'] = False
     if request.method == 'POST':
         post_data = request.get_json()
-        logger.info(post_data)
         # Todo: наверное надо сделать какую-то проверку данных на пустоту -
         # а мб не тут а на фронте
         user_hash = post_data.get('user_hash')
@@ -65,7 +63,6 @@ def document():
             if user:
                 response_object['user_exists'] = True
                 response_object['data'] = user
-    logger.info(response_object)
     return jsonify(response_object)
 
 
@@ -74,10 +71,56 @@ def register_user():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         post_data = request.get_json()
-        logger.info(post_data)
         user_hash = post_data['user_hash']
-        REDIS_CLIENT.add_user(user_hash, post_data)
-    logger.info(response_object)
+        user = REDIS_CLIENT.get_user(user_hash)
+        if user:
+            user.update(post_data)
+            REDIS_CLIENT.add_user(user_hash, user)
+        else:
+            REDIS_CLIENT.add_user(user_hash, post_data)
+    return jsonify(response_object)
+
+
+@app.route('/info/save', methods=['POST'])
+def save_info():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        user_hash = post_data.get('user_hash')
+        if user_hash:
+            user = REDIS_CLIENT.get_user(user_hash)
+            if user:
+                user.update(post_data)
+                REDIS_CLIENT.add_user(user_hash, user)
+    return jsonify(response_object)
+
+
+@app.route('/info/load', methods=['POST'])
+def load_info():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        user_hash = post_data.get('user_hash')
+        if user_hash:
+            user = REDIS_CLIENT.get_user(user_hash)
+            if user:
+                response_object['user'] = user
+    return jsonify(response_object)
+
+
+@app.route('/model/predict', methods=['POST'])
+def predict_score():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()['data']['user']
+        user_hash = post_data.get('user_hash')
+        if user_hash:
+            user = REDIS_CLIENT.get_user(user_hash)
+            logger.info(user)
+            score = MODEL.predict(user)
+            logger.info((score))
+            response_object['score'] = score
+            # response_object['target'] = target
     return jsonify(response_object)
 
 
