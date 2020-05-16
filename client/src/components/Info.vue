@@ -30,7 +30,7 @@
             </b-row>
             <b-row class="text-right mt-3">
               <b-col cols='3' align-self="end">
-                <label>Количество детей</label>
+                <label>Количество несовершеннолетних детей</label>
               </b-col>
               <b-col cols='4'>
                 <b-form-input
@@ -39,7 +39,7 @@
                   </b-form-input>
               </b-col>
               <b-col cols='0' align-self="end">
-                <label>Количество членов семьи</label>
+                <label>Количество близких членов семьи</label>
               </b-col>
               <b-col>
                 <b-form-input
@@ -50,7 +50,7 @@
               <b-col cols='3'  align-self="center">
                 <b-form-checkbox
                   v-model="info.flag_own_car"
-                  style="width: 100%">Есть машина</b-form-checkbox>
+                  style="width: 100%">Имеется в собственности машина</b-form-checkbox>
               </b-col>
               <b-col cols='4' align-self="end">
                 <label>Возраст машины</label>
@@ -66,7 +66,7 @@
               <b-col cols='3.5' align-self="top">
                 <b-form-checkbox
                   v-model="info.flag_own_realty" align='left'
-                  style="width: 100%">Есть недвижимость</b-form-checkbox>
+                  style="width: 100%">Имеется в собственности недвижимость</b-form-checkbox>
               </b-col>
               <b-col cols='4' align-self="end">
                 <label>Тип дома проживания</label>
@@ -75,7 +75,7 @@
                 <b-form-select
                   v-model="info.name_housing_type"
                   style="width: 100%">
-                  <option :value="null" disabled>Выберите семейное положение</option>
+                  <option :value="null" disabled>Выберите тип дома проживания</option>
                   <option value="House / apartment">Дом / квартира</option>
                   <option value="Rented apartment">Съемная квартира</option>
                   <option value="With parents">С родителями</option>
@@ -412,7 +412,6 @@
               <b-col align-self="center">
                 <b-form-select v-model="info.cred_type">
                   <option :value="null" disabled>Выберите тип кредита</option>
-                  <option value="cred_potreb">Потребительский кредит</option>
                   <option value="cred_nal">Кредит наличными</option>
                   <option value="cred_vozob">Возобновляемый кредит</option>
                 </b-form-select>
@@ -425,7 +424,6 @@
               <b-col align-self="center">
                 <b-form-input
                   v-model="info.goods_sum"
-                  :disabled="info.cred_type != 'cred_potreb'"
                   style="width: 100%"></b-form-input>
               </b-col>
             </b-row>
